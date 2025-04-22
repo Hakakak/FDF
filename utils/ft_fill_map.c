@@ -6,7 +6,7 @@
 /*   By: haykharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 18:49:31 by haykharu          #+#    #+#             */
-/*   Updated: 2025/04/04 13:10:03 by haykharu         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:24:08 by haykharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static int	ft_get_num(char *str)
 	{
 		tmp = ft_hex_to_nbr(++str);
 		if (tmp < 0)
-			tmp = 0;
+			tmp = 0x00FFFFFF;
 		tmp += 0xFF000000;
 	}
 	return (tmp);
 }
 
-static t_plist	*ft_newplist(int x, int y, int z, int color)
+static t_plist	*ft_newplist(size_t x, size_t y, int z, int color)
 {
 	t_plist	*tmp;
 	t_pix	*tmp_p;
@@ -43,7 +43,6 @@ static t_plist	*ft_newplist(int x, int y, int z, int color)
 	tmp_p->y = y;
 	tmp_p->z = z;
 	tmp_p->color = color;
-	printf("Init: x: %d, y: %d , z: %d, color: %d\n", x, y, z, color);
 	tmp = ft_plstnew(tmp_p);
 	if (!tmp)
 	{
@@ -53,53 +52,67 @@ static t_plist	*ft_newplist(int x, int y, int z, int color)
 	return (tmp);
 }
 
-static void	ft_get_map(char *str, t_plist **arr, size_t y)
+static int	ft_get_map(char *str, t_plist **arr, size_t y)
 {
-	size_t	x;
+	int		x;
 	t_plist	*tmp;
 
+	if (!str)
+		return (0);
 	x = 0;
-	while (str && *str != '\0')
+	while (*str != '\0')
 	{
 		if ((*str >= '0' && *str <= '9') || *str == '-')
 		{
 			tmp = ft_newplist(x, y, ft_atoi(str), ft_get_num(str));
 			if (!tmp)
-				return ;
-			while (*str && *str != '\n' && *str != ' ')
+				return (-1);
+			while (*str != '\0' && *str != '\n' && *str != ' ')
 				++str;
 			ft_plstadd_b(arr, tmp);
 			++x;
 		}
-		++str;
+		if (*str != '\0')
+			++str;
 	}
+	return (x);
+}
+
+int	ft_check_fd(char *f_name)
+{
+	int	fd;
+
+	fd = open(f_name, O_RDONLY);
+	if (fd <= 0)
+		return (-1);
+	return (fd);
 }
 
 int	ft_fill_map(char *f_name, t_wdata *mlx)
 {
 	int		fd;
+	int		x;
 	char	*tmp;
 	size_t	y;
 
-	fd = open(f_name, O_RDONLY);
-	if (!fd)
-		return (0);
+	fd = ft_check_fd(f_name);
 	tmp = get_next_line(fd);
 	if (!tmp)
 		return (-1);
 	y = 0;
 	while (tmp)
 	{
-		ft_get_map(tmp, mlx->pix, y);
+		x = ft_get_map(tmp, mlx->pix, y);
+		if (!mlx->xlen)
+			mlx->xlen = x;
 		free(tmp);
 		tmp = get_next_line(fd);
 		if (!tmp)
 			break ;
-		if (y)
-			ft_draw_map(mlx);
 		++y;
 	}
-	printf("The last time!!!\n");
+	mlx->ylen = y;
+	ft_addm_pix(mlx->pix, mlx->xlen, mlx->ylen);
 	ft_draw_map(mlx);
 	return (1);
 }

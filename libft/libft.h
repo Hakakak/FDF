@@ -6,14 +6,14 @@
 /*   By: haykharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 20:03:45 by haykharu          #+#    #+#             */
-/*   Updated: 2025/04/03 12:16:36 by haykharu         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:23:17 by haykharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10000
+#  define BUFFER_SIZE 100
 # endif
 # include <stdlib.h>
 # include <unistd.h>
@@ -41,6 +41,7 @@ int		ft_raise(int base, int power);
 int		ft_printf(const char *s, ...);
 int		ft_identify(va_list args, char *s);
 int		ft_countc_fd(char c, int fd, int mode);
+int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 void	ft_bzero(void *s, size_t n);

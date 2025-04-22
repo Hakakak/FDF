@@ -6,58 +6,87 @@
 /*   By: haykharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:19:17 by haykharu          #+#    #+#             */
-/*   Updated: 2025/04/04 13:04:01 by haykharu         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:36:57 by haykharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	ft_clear_pline(t_plist **lst)
+void	ft_adda_pix(t_plist **plst)
 {
 	t_plist	*tmp;
-	int	y;
+	double	x;
+	double	y;
 
-	if (!lst || !*lst)
+	if (!plst || !*plst)
 		return ;
-	y = (*lst)->pix->y;
-	while (*lst != NULL)
+	tmp = *plst;
+	while (tmp)
 	{
-		if (y != (*lst)->pix->y)
-			break ;
-		tmp = *lst;
-		*lst = (*lst)->next;
-		free(tmp);
+		x = tmp->pix->x;
+		y = tmp->pix->y;
+		tmp->pix->x = (x - y) * cos(0.5235);
+		tmp->pix->y = (x + y) * sin(0.5235) - tmp->pix->z * sqrt(SCALE);
+		printf("(x: %f, y: %f) ", tmp->pix->x, tmp->pix->y);
+		tmp = tmp->next;
 	}
-	printf("Deleting %d line\n", y);
+	printf("\n");
+}
+
+void	ft_addm_pix(t_plist **plst, int xlen, int ylen)
+{
+	t_plist	*tmp;
+	int		real_w;
+	int		real_h;
+
+	if (!plst || !*plst)
+		return ;
+	if (xlen <= 0 || ylen <= 0)
+		return ;
+	tmp = *plst;
+	real_w = WIN_W - WIN_M_W * 2;
+	real_h = WIN_H - WIN_M_H * 2;
+	while (tmp)
+	{
+		tmp->pix->x *= real_w / (xlen + 2);
+		tmp->pix->y *= real_h / (ylen + 2);
+		tmp = tmp->next;
+	}
+	ft_adda_pix(plst);
+	tmp = *plst;
+	while (tmp)
+	{
+		tmp->pix->x += (real_w - real_w / (xlen + 2) * xlen) / 2;
+		tmp->pix->y += (real_h - real_h / (ylen + 2) * ylen) / 2;
+		tmp = tmp->next;
+	}
 }
 
 void	ft_draw_map(t_wdata *mlx)
 {
-	t_plist	*tmp;
 	t_plist	*nxt;
 	t_plist	*lst;
-	int	y;
+	t_plist	*tmp;
+	int		count;
 
 	lst = *mlx->pix;
 	if (!lst || !lst->next)
 		return ;
+	mlx->img = ft_create_image(mlx);
 	nxt = lst->next;
-	y = lst->pix->y;
+	count = 1;
 	while (nxt)
 	{
-		printf("x: %d, y: %d, z: %d ", lst->pix->x, lst->pix->y, lst->pix->z);
-		printf(" dx: %d, dy: %d, dz: %d ", lst->pix->x - nxt->pix->x, lst->pix->y - nxt->pix->y, lst->pix->z - nxt->pix->z);
-		if (lst->pix->y != y)
-			break ;
-		if (nxt->pix->y == lst->pix->y)		
-			ft_draw_line(mlx->img, lst->pix, nxt->pix, lst->pix->color);
-		tmp = ft_findlst(lst, lst->pix->x, lst->pix->y + 50);
-		printf("Here is the tmp %p\n", (void *) tmp);
+		tmp = ft_lstfind_nxty(lst, mlx->xlen);
 		if (tmp)
-			ft_draw_line(mlx->img, lst->pix, tmp->pix, lst->pix->color);
+			ft_draw_line(mlx, lst->pix, tmp->pix);
+		if (count < mlx->xlen)
+			ft_draw_line(mlx, lst->pix, nxt->pix);
+		else
+			count = 0;
 		lst = lst->next;
 		nxt = lst->next;
+		++count;
 	}
-	ft_clear_pline(mlx->pix);
-	printf("End of line........................\n");
+	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img->img, 0, 0);
 }
