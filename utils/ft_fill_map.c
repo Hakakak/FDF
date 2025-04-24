@@ -41,7 +41,7 @@ static t_plist	*ft_newplist(size_t x, size_t y, int z, int color)
 		return (NULL);
 	tmp_p->x = x;
 	tmp_p->y = y;
-	tmp_p->z = z;
+	tmp_p->z = z * 4;
 	tmp_p->color = color;
 	tmp = ft_plstnew(tmp_p);
 	if (!tmp)

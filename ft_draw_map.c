@@ -26,7 +26,7 @@ void	ft_adda_pix(t_plist **plst)
 		x = tmp->pix->x;
 		y = tmp->pix->y;
 		tmp->pix->x = (x - y) * cos(0.5235);
-		tmp->pix->y = (x + y) * sin(0.5235) - tmp->pix->z * sqrt(SCALE);
+		tmp->pix->y = (x + y) * sin(0.5235) - tmp->pix->z;
 		printf("(x: %f, y: %f) ", tmp->pix->x, tmp->pix->y);
 		tmp = tmp->next;
 	}
@@ -56,7 +56,7 @@ void	ft_addm_pix(t_plist **plst, int xlen, int ylen)
 	tmp = *plst;
 	while (tmp)
 	{
-		tmp->pix->x += (real_w - real_w / (xlen + 2) * xlen) / 2;
+		tmp->pix->x += (real_w - real_w / xlen) / 2;
 		tmp->pix->y += (real_h - real_h / (ylen + 2) * ylen) / 2;
 		tmp = tmp->next;
 	}
@@ -89,4 +89,5 @@ void	ft_draw_map(t_wdata *mlx)
 		++count;
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img->img, 0, 0);
+	ft_put_instructions(mlx);
 }

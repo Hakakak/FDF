@@ -46,7 +46,10 @@ typedef struct s_wdata
 	t_plist	**pix;
 }				t_wdata;
 
-void	ft_rotate(t_pix **pix, float angle, int dir);
+void	ft_put_instructions(t_wdata *mlx);
+int	ft_mouse_keys(int key, int x, int y, void *mlx_t);
+int	ft_hook_keys(int key, void *mlx_t);
+void	ft_rotate_axis(t_wdata *mlx, float angle, int axis);
 void	ft_scale_map(t_wdata *mlx, int dir);
 void	ft_move_x(t_wdata *mlx, int dir);
 void	ft_move_y(t_wdata *mlx, int dir);

@@ -33,17 +33,35 @@
 # ifndef SCALE
 #  define SCALE 10
 # endif
-# ifndef L_ARROW
-#  define L_ARROW 65361
+# ifndef LEFT_ARROW
+#  define LEFT_ARROW 65361
+# endif
+# ifndef UP_ARROW
+#  define UP_ARROW 65362
+# endif
+# ifndef RIGHT_ARROW
+#  define RIGHT_ARROW 65363
+# endif
+# ifndef DOWN_ARROW
+#  define DOWN_ARROW 65364
 # endif
 # ifndef U_ARROW
-#  define U_ARROW 65362
+#  define U_ARROW 117
 # endif
-# ifndef R_ARROW
-#  define R_ARROW 65363
+# ifndef J_ARROW
+#  define J_ARROW 106
 # endif
-# ifndef D_ARROW
-#  define D_ARROW 65364
+# ifndef I_ARROW
+#  define I_ARROW 105
+# endif
+# ifndef K_ARROW
+#  define K_ARROW 107
+# endif
+# ifndef O_ARROW
+#  define O_ARROW 111
+# endif
+# ifndef L_ARROW
+#  define L_ARROW 108
 # endif
 # ifndef ESC
 #  define ESC 65307

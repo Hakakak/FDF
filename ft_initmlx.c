@@ -57,44 +57,6 @@ t_idata	*ft_create_image(t_wdata *mlx)
 	return (img);
 }
 
-int	ft_mouse_keys(int key, int x, int y, void *mlx_t)
-{
-	t_wdata	*mlx;
-
-	mlx = (t_wdata *) mlx_t;
-	if (!mlx)
-		return (0);
-	x = 0;
-	y = 0;
-	printf("Scroolll!!!!!!! key: %d\n", key);
-	if (key == 4)
-		ft_scale_map(mlx, -1);
-	else if (key == 5)
-		ft_scale_map(mlx, 1);
-	return (0);
-}
-
-int	ft_hook_keys(int key, void *mlx_t)
-{
-	t_wdata	*mlx;
-
-	mlx = (t_wdata *) mlx_t;
-	if (!mlx || key == 144)
-		return (0);
-	printf("Keyboard!!!!!!!! key: %d\n", key);
-	if (key == L_ARROW)
-		ft_move_x(mlx, 1);
-	else if (key == R_ARROW)
-		ft_move_x(mlx, -1);
-	else if (key == U_ARROW)
-		ft_move_y(mlx, 1);
-	else if (key == D_ARROW)
-		ft_move_y(mlx, -1);
-	else if (key == ESC)
-		ft_free_mlx(mlx);
-	return (0);
-}
-
 t_wdata	*ft_initmlx(void)
 {
 	t_wdata	*mlx;

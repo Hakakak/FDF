@@ -19,7 +19,7 @@ int	ft_check_fname(char **av)
 	if (!av || !av[1])
 		return (0);
 	tmp = ft_strrchr(av[1], '.');
-	if (!ft_strcmp(tmp, ".fdf"))
+	if (tmp && !ft_strcmp(tmp, ".fdf"))
 		return (1);
 	else
 		return (0);
@@ -28,7 +28,6 @@ int	ft_check_fname(char **av)
 int	main(int ac, char **av)
 {
 	t_wdata	*mlx;
-	int		i;
 
 	if (ac != 2 || !ft_check_fname(av))
 	{
@@ -41,11 +40,10 @@ int	main(int ac, char **av)
 		return (0);
 	printf("mlx: %s, mlx->img: %s\n", mlx ? "OK!" : "KO!", mlx->img ? "OK!" : "KO!");
 	printf("Filling.....................\n");
-	i = ft_fill_map(av[1], mlx);
+	ft_fill_map(av[1], mlx);
 	printf("Filled......................\n");
 	printf("mlx->pix: %s\n", mlx->pix ? "OK!" : "KO!");
 	printf("*mlx->pix: %s\n", *(mlx->pix) ? "OK!" : "KO!");
-	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img->img, 0, 0);
 	mlx_loop(mlx->mlx);
 	return (0);
 }

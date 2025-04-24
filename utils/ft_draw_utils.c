@@ -113,9 +113,43 @@ void	ft_move_x(t_wdata *mlx, int dir)
 	ft_draw_map(mlx);
 }
 
-void	ft_rotate(t_pix **pix, float angle, int dir)
+void	ft_rotate_axis(t_wdata *mlx, float angle, int axis)
 {
-	dir = 0;
-	(*pix)->y = (*pix)->y * cos(angle) - (*pix)->z * sin(angle);
-	(*pix)->z = (*pix)->y * sin(angle) + (*pix)->z * cos(angle);
+	t_plist	*tmp;
+	t_pix	tpix;
+
+	if (!mlx || !mlx->pix)
+		return ;
+	tmp = *mlx->pix;
+	if (axis == 0)
+	{
+		while (tmp)
+		{
+			tpix.y = tmp->pix->y;
+			tmp->pix->y = tmp->pix->y * cos(angle) - tmp->pix->z * sin(angle);
+			tmp->pix->z = tpix.y * sin(angle) + tmp->pix->z * cos(angle);
+			tmp = tmp->next;
+		}
+	}
+	else if (axis == 1)
+	{
+		while (tmp)
+		{
+			tpix.x = tmp->pix->x;
+			tmp->pix->x = tmp->pix->x * cos(angle) + tmp->pix->z * sin(angle);
+			tmp->pix->z = -tpix.x * sin(angle) + tmp->pix->z * cos(angle);
+			tmp = tmp->next;
+		}
+	}
+	else if (axis == 2)
+	{
+		while (tmp)
+		{
+			tpix.x = tmp->pix->x;
+			tmp->pix->x = tmp->pix->x * cos(angle) - tmp->pix->y * sin(angle);
+			tmp->pix->y = tpix.x * sin(angle) + tmp->pix->y * cos(angle);
+			tmp = tmp->next;
+		}
+	}
+	ft_draw_map(mlx);
 }
