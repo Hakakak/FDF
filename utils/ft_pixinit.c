@@ -6,44 +6,38 @@
 /*   By: haykharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 12:56:26 by haykharu          #+#    #+#             */
-/*   Updated: 2025/04/03 11:03:43 by haykharu         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:18:18 by haykharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_plist	*ft_plstlast(t_plist *lst)
+void	ft_pix_addnxt(t_pix *pix)
 {
-	if (!lst)
-		return (NULL);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
-}
+	int		rgb[3];
 
-void	ft_plstadd_b(t_plist **lst, t_plist *new)
-{
-	t_plist	*ls;
-
-	ls = ft_plstlast(*lst);
-	if (ls)
-		ls->next = new;
-	else
-		*lst = new;
-}
-
-void	ft_plstadd_f(t_plist **lst, t_plist *new)
-{
-	if (!lst || !*lst)
+	if (!pix)
+		return ;
+	rgb[0] = (pix->color >> 16) & 0xFF;
+	rgb[1] = (pix->color >> 8) & 0xFF;
+	rgb[2] = pix->color & 0xFF;
+	if (rgb[0] < 255)
+		++rgb[0];
+	else if (rgb[0] >= 255 && rgb[1] < 255)
+		++rgb[1];
+	else if (rgb[1] >= 255 && rgb[2] < 255)
 	{
-		*lst = new;
-		(*lst)->next = new->next;
+		rgb[0] = 40;
+		rgb[1] = 40;
+		rgb[2] = 255;
 	}
 	else
 	{
-		new->next = *lst;
-		*lst = new;
+		rgb[0] = 180;
+		rgb[1] = 40;
+		rgb[2] = 40;
 	}
+	pix->color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
 }
 
 void	ft_plstclear(t_plist **lst)

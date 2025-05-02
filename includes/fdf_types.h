@@ -6,7 +6,7 @@
 /*   By: haykharu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 12:39:22 by haykharu          #+#    #+#             */
-/*   Updated: 2025/04/18 13:08:04 by haykharu         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:16:24 by haykharu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,18 @@ typedef struct s_wdata
 }				t_wdata;
 
 void	ft_put_instructions(t_wdata *mlx);
-int	ft_mouse_keys(int key, int x, int y, void *mlx_t);
-int	ft_hook_keys(int key, void *mlx_t);
 void	ft_rotate_axis(t_wdata *mlx, float angle, int axis);
+void	ft_rotate_x(t_pix *pix, float angle);
+void	ft_rotate_y(t_pix *pix, float angle);
+void	ft_rotate_z(t_pix *pix, float angle);
+void	ft_set_steps(double *d, double dx, double dy);
 void	ft_scale_map(t_wdata *mlx, int dir);
 void	ft_move_x(t_wdata *mlx, int dir);
 void	ft_move_y(t_wdata *mlx, int dir);
+void	ft_add_rgb(t_wdata *mlx);
+void	ft_pix_addnxt(t_pix *pix);
+int		ft_mouse_keys(int key, int x, int y, void *mlx_t);
+int		ft_hook_keys(int key, void *mlx_t);
 int		ft_fill_map(char *t_name, t_wdata *mlx);
 t_plist	*ft_lstfind_nxty(t_plist *lst, int xlen);
 t_plist	*ft_plstlast(t_plist *lst);
@@ -61,4 +67,5 @@ void	ft_plstclear(t_plist **lst);
 size_t	ft_plstsize(t_plist *lst);
 void	ft_plstadd_f(t_plist **lst, t_plist *new);
 void	ft_plstadd_b(t_plist **lst, t_plist *new);
+void	ft_put_error(char *msg, int type, t_wdata *mlx);
 #endif
